@@ -1,0 +1,20 @@
+# Core dependencies
+torch>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+
+# Data processing
+json5>=0.9.0
+
+# Table generation for experiments
+tabulate>=0.9.0
+
+# Optional: API clients for LLM instruction generation
+# Uncomment if needed
+# dashscope>=1.14.0  # Alibaba Cloud Bailian API
+# anthropic>=0.18.0   # Anthropic API
+
+# Development
+# pytest>=7.0.0
+# black>=23.0.0
+# flake8>=6.0.0
