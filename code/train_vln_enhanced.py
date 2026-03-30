@@ -17,6 +17,7 @@ import random
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 from datetime import datetime
+from pathlib import Path
 
 import torch
 import torch.nn as nn
@@ -24,7 +25,11 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CHECKPOINT_DIR = REPO_ROOT / "checkpoints"
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import VLNBaseline, create_model, count_parameters
 
@@ -318,9 +323,9 @@ class EnhancedVLNTrainer:
             'best_val_loss': self.best_val_loss,
             'train_history': self.train_history
         }
-        path = f"/Users/tyrion/Projects/Papers/checkpoints/vln_{name}.pt"
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        torch.save(checkpoint, path)
+        path = CHECKPOINT_DIR / f"vln_{name}.pt"
+        os.makedirs(path.parent, exist_ok=True)
+        torch.save(checkpoint, str(path))
         print(f"  已保存模型：{path}")
 
     def train(self, num_epochs: int = 20):
@@ -385,9 +390,9 @@ class EnhancedVLNTrainer:
 
     def _save_history(self):
         """保存训练历史"""
-        history_file = "/Users/tyrion/Projects/Papers/checkpoints/training_history.json"
-        os.makedirs(os.path.dirname(history_file), exist_ok=True)
-        with open(history_file, 'w') as f:
+        history_file = CHECKPOINT_DIR / "training_history.json"
+        os.makedirs(history_file.parent, exist_ok=True)
+        with open(history_file, 'w', encoding='utf-8') as f:
             json.dump(self.train_history, f, indent=2)
 
 

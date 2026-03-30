@@ -14,6 +14,7 @@ from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+import argparse
 
 import torch
 import torch.nn as nn
@@ -21,7 +22,12 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+DATA_DIR = REPO_ROOT / "data" / "r2r_enhanced"
+CHECKPOINT_DIR = REPO_ROOT / "checkpoints"
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import VLNBaseline, create_model, count_parameters
 
@@ -45,11 +51,18 @@ class VLNExample:
 class R2REnhancedDataset(Dataset):
     """R2R 增强数据集"""
 
-    def __init__(self, data_file: str, feature_dim: int = 2048, d_model: int = 256):
+    def __init__(
+        self,
+        data_file: str,
+        feature_dim: int = 2048,
+        d_model: int = 256,
+        vocab_file: Optional[str] = None,
+    ):
         self.feature_dim = feature_dim
         self.d_model = d_model
         self.data = []
         self.char_to_id = {}
+        self.vocab_file = vocab_file
 
         # 学习投影矩阵（2048 -> 256）
         self.proj_matrix = None
@@ -64,18 +77,23 @@ class R2REnhancedDataset(Dataset):
         with open(data_file, 'r', encoding='utf-8') as f:
             raw_data = json.load(f)
 
-        # 第一遍：构建词表
-        for item in raw_data:
-            instruction = item['instruction']
-            for char in instruction:
-                if char not in self.char_to_id:
-                    self.char_to_id[char] = len(self.char_to_id) + 4
+        # 词表：优先使用生成器输出的 vocabulary.json，确保 train/eval token 映射一致
+        if self.vocab_file is not None and os.path.exists(self.vocab_file):
+            with open(self.vocab_file, 'r', encoding='utf-8') as vf:
+                self.char_to_id = json.load(vf)
+        else:
+            # 第一遍：根据训练数据构建词表（回退策略）
+            for item in raw_data:
+                instruction = item['instruction']
+                for char in instruction:
+                    if char not in self.char_to_id:
+                        self.char_to_id[char] = len(self.char_to_id) + 4
 
-        # 添加特殊 token
-        self.char_to_id['<pad>'] = 0
-        self.char_to_id['<unk>'] = 1
-        self.char_to_id['<cls>'] = 2
-        self.char_to_id['<sep>'] = 3
+            # 添加特殊 token
+            self.char_to_id['<pad>'] = 0
+            self.char_to_id['<unk>'] = 1
+            self.char_to_id['<cls>'] = 2
+            self.char_to_id['<sep>'] = 3
 
         print(f"词表大小：{len(self.char_to_id)}")
 
@@ -86,9 +104,11 @@ class R2REnhancedDataset(Dataset):
 
         # 第二遍：加载数据并投影特征
         for item in raw_data:
-            # 转换指令为 ID
-            instruction = item['instruction']
-            instr_ids = [self.char_to_id.get(c, 1) for c in instruction]
+            instruction = item.get('instruction', '')
+            # 指令 token：直接使用数据文件里的 instruction_ids（避免 train/eval token 不一致）
+            instr_ids = item.get('instruction_ids')
+            if instr_ids is None:
+                instr_ids = [self.char_to_id.get(c, 1) for c in instruction]
 
             # 投影候选方向 (2048 -> 256)
             candidate_dirs_raw = torch.tensor(item['candidate_directions'], dtype=torch.float32)
@@ -290,9 +310,9 @@ class R2REnhancedTrainer:
             'best_val_loss': self.best_val_loss,
             'train_history': self.train_history
         }
-        path = f"/Users/tyrion/Projects/Papers/checkpoints/vln_r2r_{name}.pt"
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        torch.save(checkpoint, path)
+        path = CHECKPOINT_DIR / f"vln_r2r_{name}.pt"
+        os.makedirs(path.parent, exist_ok=True)
+        torch.save(checkpoint, str(path))
         print(f"  已保存模型：{path}")
 
     def train(self, num_epochs: int = 20):
@@ -357,9 +377,9 @@ class R2REnhancedTrainer:
 
     def _save_history(self):
         """保存训练历史"""
-        history_file = "/Users/tyrion/Projects/Papers/checkpoints/training_history_r2r.json"
-        os.makedirs(os.path.dirname(history_file), exist_ok=True)
-        with open(history_file, 'w') as f:
+        history_file = CHECKPOINT_DIR / "training_history_r2r.json"
+        os.makedirs(history_file.parent, exist_ok=True)
+        with open(history_file, 'w', encoding='utf-8') as f:
             json.dump(self.train_history, f, indent=2)
 
 
@@ -368,18 +388,29 @@ class R2REnhancedTrainer:
 # ============================================================
 
 def main():
-    # 配置
-    batch_size = 16
-    num_epochs = 20
-    lr = 1e-4
-    grad_accum_steps = 2  # 有效 batch_size = 16 * 2 = 32
-    patience = 5
-    warmup_epochs = 3
-    device = 'cpu'
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--epochs", type=int, default=20)
+    parser.add_argument("--lr", type=float, default=1e-4)
+    parser.add_argument("--grad-accum-steps", type=int, default=2)
+    parser.add_argument("--patience", type=int, default=5)
+    parser.add_argument("--warmup-epochs", type=int, default=3)
+    parser.add_argument("--device", type=str, default="cpu")
+    parser.add_argument("--train-data", type=str, default=str(DATA_DIR / "r2r_enhanced_train.json"))
+    parser.add_argument("--val-data", type=str, default=str(DATA_DIR / "r2r_enhanced_val.json"))
+    args = parser.parse_args()
 
-    # 数据路径
-    train_data_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_train.json"
-    val_data_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_val.json"
+    batch_size = args.batch_size
+    num_epochs = args.epochs
+    lr = args.lr
+    grad_accum_steps = args.grad_accum_steps  # 有效 batch_size = batch_size * grad_accum_steps
+    patience = args.patience
+    warmup_epochs = args.warmup_epochs
+    device = args.device
+
+    train_data_file = args.train_data
+    val_data_file = args.val_data
+    vocab_file = str(DATA_DIR / "vocabulary.json")
 
     print(f"使用设备：{device}")
     print(f"有效批次大小：{batch_size * grad_accum_steps}")
@@ -388,8 +419,8 @@ def main():
 
     # 创建数据集
     print("\n创建数据集...")
-    train_dataset = R2REnhancedDataset(data_file=train_data_file)
-    val_dataset = R2REnhancedDataset(data_file=val_data_file)
+    train_dataset = R2REnhancedDataset(data_file=train_data_file, vocab_file=vocab_file)
+    val_dataset = R2REnhancedDataset(data_file=val_data_file, vocab_file=vocab_file)
 
     vocab_size = train_dataset.get_vocab_size()
     print(f"词表大小：{vocab_size}")

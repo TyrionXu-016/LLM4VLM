@@ -5,6 +5,7 @@ R2R 英文指令样本数据
 """
 
 import json
+from pathlib import Path
 
 # R2R 风格英文指令样本（模拟真实数据分布）
 R2R_INSTRUCTIONS = [
@@ -109,7 +110,8 @@ def save_r2r_samples(output_file: str):
 
 
 if __name__ == "__main__":
-    save_r2r_samples("/Users/tyrion/Projects/Papers/data/r2r_english_samples.json")
+    REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+    save_r2r_samples(str(REPO_ROOT / "data" / "r2r_english_samples.json"))
 
     print("\nR2R 英文指令示例:")
     print("=" * 70)

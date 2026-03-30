@@ -199,7 +199,7 @@ print(f"SPL: {metrics['SPL']*100:.2f}%")
 基于增强数据重新训练 VLN 基线模型：
 
 ```bash
-cd /Users/tyrion/Projects/Papers/code
+cd code
 source ../vln-env/bin/activate
 
 # 修改 train_vln_enhanced.py 中的数据路径

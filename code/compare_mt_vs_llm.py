@@ -6,8 +6,12 @@
 
 import sys
 import json
+from pathlib import Path
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from evaluate_instructions import SimpleChineseVLNEvaluator
 
@@ -143,7 +147,7 @@ def compare_translations(machine_trans_file: str, llm_generated_file: str, outpu
 
 if __name__ == "__main__":
     compare_translations(
-        machine_trans_file="/Users/tyrion/Projects/Papers/data/r2r_machine_translations.json",
-        llm_generated_file="/Users/tyrion/Projects/Papers/data/generated_instructions.json",
-        output_file="/Users/tyrion/Projects/Papers/data/mt_vs_llm_comparison.json"
+        machine_trans_file=str(REPO_ROOT / "data" / "r2r_machine_translations.json"),
+        llm_generated_file=str(REPO_ROOT / "data" / "generated_instructions.json"),
+        output_file=str(REPO_ROOT / "data" / "mt_vs_llm_comparison.json")
     )

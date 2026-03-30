@@ -24,7 +24,10 @@ from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 import math
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import VLNBaseline, create_model, count_parameters
 
@@ -468,11 +471,11 @@ def run_ablation_studies():
     """运行所有消融实验"""
 
     # 数据文件路径
-    train_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_train.json"
-    val_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_val.json"
+    train_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_train.json")
+    val_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_val.json")
 
     # 加载词表获取词表大小
-    vocab_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/vocabulary.json"
+    vocab_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "vocabulary.json")
     with open(vocab_file, 'r', encoding='utf-8') as f:
         char_to_id = json.load(f)
     vocab_size = len(char_to_id)
@@ -486,7 +489,7 @@ def run_ablation_studies():
     print(f"\n计划运行 {len(experiments)} 个消融实验")
 
     results = []
-    output_dir = Path("/Users/tyrion/Projects/Papers/experiments/ablation_studies")
+    output_dir = REPO_ROOT / "experiments" / "ablation_studies"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'

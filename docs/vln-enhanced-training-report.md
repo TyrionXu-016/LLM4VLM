@@ -222,7 +222,7 @@ print(f"置信度：{confidence.item():.4f}")
 ### 复现训练
 
 ```bash
-cd /Users/tyrion/Projects/Papers/code
+cd code
 source ../vln-env/bin/activate
 python train_vln_enhanced.py
 ```

@@ -185,7 +185,7 @@ print(f"预测动作：{action.item()}, 置信度：{confidence.item():.4f}")
 ### 8.2 重新训练
 
 ```bash
-cd /Users/tyrion/Projects/Papers/code
+cd code
 source ../vln-env/bin/activate
 python train_vln_baseline.py
 ```

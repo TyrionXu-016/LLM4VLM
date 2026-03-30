@@ -12,9 +12,12 @@ import numpy as np
 from pathlib import Path
 from collections import defaultdict
 
+# 项目根目录
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+
 # 输入输出文件
-EVAL_FILE = Path("/Users/tyrion/Projects/Papers/data/evaluation_r2r/model_evaluation_detailed.json")
-OUTPUT_FILE = Path("/Users/tyrion/Projects/Papers/paper/qualitative_analysis.md")
+EVAL_FILE = REPO_ROOT / "data" / "evaluation_r2r" / "model_evaluation_detailed.json"
+OUTPUT_FILE = REPO_ROOT / "paper" / "qualitative_analysis.md"
 
 def load_evaluation_data():
     """加载评估数据"""

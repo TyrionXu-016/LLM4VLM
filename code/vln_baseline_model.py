@@ -186,13 +186,12 @@ class ActionPredictor(nn.Module):
         for i in range(candidate_directions.size(1)):
             cand_feat = candidate_directions[:, i, :]  # [batch, d_model]
             fused = torch.cat([instruction_mean, cand_feat], dim=-1)  # [batch, 2*d_model]
-            score = self.action_head(self.fusion(fused))  # [batch, 1]
+            score = self.action_head(self.fusion(fused))  # [batch, 1] (logit)
             scores.append(score)
 
         scores = torch.cat(scores, dim=-1)  # [batch, num_candidates]
-        action_probs = F.softmax(scores, dim=-1)
-
-        return action_probs
+        # 返回 logits；softmax 在外部根据需要计算
+        return scores
 
 
 class VLNBaseline(nn.Module):
@@ -266,12 +265,13 @@ class VLNBaseline(nn.Module):
             instruction_mask=batch.get('instruction_mask')
         )
 
-        # 预测动作
-        action_probs = self.action_predictor(
+        # 预测动作（logits -> probs）
+        action_logits = self.action_predictor(
             attended_instruction,
             visual_emb,
             batch['candidate_directions']
         )
+        action_probs = F.softmax(action_logits, dim=-1)
 
         output = {
             'action_probs': action_probs,
@@ -280,7 +280,8 @@ class VLNBaseline(nn.Module):
 
         # 计算损失（训练时）
         if 'target_action' in batch:
-            loss = F.cross_entropy(action_probs, batch['target_action'])
+            # 交叉熵期望 logits（未 softmax），避免 softmax 两次导致训练失效
+            loss = F.cross_entropy(action_logits, batch['target_action'])
             output['loss'] = loss
 
         return output

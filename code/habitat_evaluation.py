@@ -22,7 +22,11 @@ from habitat_baselines.common.obs_dict import ObservationDict
 
 # 导入我们的 VLN 模型
 import sys
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 from vln_baseline_model import VLNBaseline, create_model
 
 

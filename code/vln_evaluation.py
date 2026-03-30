@@ -427,8 +427,9 @@ def main():
     # 打印报告
     print_evaluation_report(metrics, results)
 
-    # 保存结果
-    output_dir = Path("/Users/tyrion/Projects/Papers/data/evaluation")
+    # 保存结果（使用相对路径，避免硬编码用户目录）
+    REPO_ROOT = Path(__file__).resolve().parents[1]
+    output_dir = REPO_ROOT / "data" / "evaluation"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # 保存指标

@@ -13,25 +13,28 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
 
+# 项目根目录
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+
 # 设置中文字体
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.size'] = 10
 plt.rcParams['axes.unicode_minus'] = False
 
 # 输出目录
-OUTPUT_DIR = Path("/Users/tyrion/Projects/Papers/paper/figures")
+OUTPUT_DIR = REPO_ROOT / "paper" / "figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_training_history():
     """加载训练历史"""
     # 随机特征训练历史
-    random_history_file = "/Users/tyrion/Projects/Papers/checkpoints/training_history.json"
+    random_history_file = REPO_ROOT / "checkpoints" / "training_history.json"
     with open(random_history_file, 'r') as f:
         random_history = json.load(f)
 
     # ResNet 特征训练历史
-    resnet_history_file = "/Users/tyrion/Projects/Papers/checkpoints/training_history_r2r.json"
+    resnet_history_file = REPO_ROOT / "checkpoints" / "training_history_r2r.json"
     with open(resnet_history_file, 'r') as f:
         resnet_history = json.load(f)
 
@@ -40,7 +43,7 @@ def load_training_history():
 
 def load_evaluation_results():
     """加载评估结果"""
-    eval_file = "/Users/tyrion/Projects/Papers/data/evaluation_r2r/model_evaluation_metrics.json"
+    eval_file = REPO_ROOT / "data" / "evaluation_r2r" / "model_evaluation_metrics.json"
     with open(eval_file, 'r') as f:
         return json.load(f)
 
@@ -330,7 +333,7 @@ def plot_confidence_distribution():
     """Figure 6: 置信度分布图"""
 
     # 加载详细结果
-    detailed_file = "/Users/tyrion/Projects/Papers/data/evaluation_r2r/model_evaluation_detailed.json"
+    detailed_file = REPO_ROOT / "data" / "evaluation_r2r" / "model_evaluation_detailed.json"
     with open(detailed_file, 'r') as f:
         results = json.load(f)
 

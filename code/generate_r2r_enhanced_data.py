@@ -14,6 +14,7 @@ import math
 from typing import Dict, List, Tuple
 from dataclasses import dataclass
 from pathlib import Path
+import argparse
 
 import torch
 import torch.nn as nn
@@ -21,8 +22,9 @@ from torchvision import models, transforms
 from PIL import Image
 import numpy as np
 
-# 输出目录
-OUTPUT_DIR = Path("/Users/tyrion/Projects/Papers/data/r2r_enhanced")
+# 项目根目录与输出目录（避免硬编码用户目录绝对路径）
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+OUTPUT_DIR = REPO_ROOT / "data" / "r2r_enhanced"
 
 
 @dataclass
@@ -42,40 +44,62 @@ class EnhancedR2RSample:
 class ResNetFeatureExtractor:
     """使用预训练 ResNet 提取视觉特征"""
 
-    def __init__(self, model_name: str = 'resnet152', feature_dim: int = 2048):
+    def __init__(
+        self,
+        model_name: str = 'resnet152',
+        feature_dim: int = 2048,
+        feature_mode: str = "random",
+        pretrained: bool = False,
+    ):
         self.feature_dim = feature_dim
-        self.device = torch.device('cpu')
+        self.device = torch.device("cpu")
+        self.feature_mode = feature_mode
 
-        # 加载预训练 ResNet
-        print(f"加载预训练 {model_name}...")
-        if model_name == 'resnet152':
-            backbone = models.resnet152(weights=models.ResNet152_Weights.IMAGENET1K_V1)
-        elif model_name == 'resnet101':
-            backbone = models.resnet101(weights=models.ResNet101_Weights.IMAGENET1K_V1)
-        elif model_name == 'resnet50':
-            backbone = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
+        if self.feature_mode == "resnet":
+            # 加载 ResNet（可选是否下载预训练权重）
+            if pretrained:
+                print(f"加载预训练 {model_name}...")
+            else:
+                print(f"加载 {model_name}（不使用预训练权重）...")
+
+            if model_name == "resnet152":
+                weights = models.ResNet152_Weights.IMAGENET1K_V1 if pretrained else None
+                backbone = models.resnet152(weights=weights)
+            elif model_name == "resnet101":
+                weights = models.ResNet101_Weights.IMAGENET1K_V1 if pretrained else None
+                backbone = models.resnet101(weights=weights)
+            elif model_name == "resnet50":
+                weights = models.ResNet50_Weights.IMAGENET1K_V1 if pretrained else None
+                backbone = models.resnet50(weights=weights)
+            else:
+                raise ValueError(f"不支持的模型：{model_name}")
+
+            # 移除最后的分类层，保留特征提取部分
+            self.feature_extractor = nn.Sequential(*list(backbone.children())[:-1])
+            self.feature_extractor.eval()
+        elif self.feature_mode == "random":
+            print("使用随机特征模式（用于快速复现链路）")
+            self.feature_extractor = None
         else:
-            raise ValueError(f"不支持的模型：{model_name}")
+            raise ValueError("feature_mode 仅支持 'random' 或 'resnet'")
 
-        # 移除最后的分类层，保留特征提取部分
-        self.feature_extractor = nn.Sequential(*list(backbone.children())[:-1])
-        self.feature_extractor.eval()
-
-        # 图像预处理
+        # 图像预处理（仅在 resnet 模式用到）
         self.preprocess = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
             transforms.Normalize(
                 mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225]
+                std=[0.229, 0.224, 0.225],
             ),
         ])
 
-        print(f"  ✓ ResNet 特征提取器已加载（特征维度：{feature_dim}）")
+        print(f"  ✓ 特征维度：{feature_dim}（mode={self.feature_mode}）")
 
     def extract_from_image(self, image_path: str) -> torch.Tensor:
         """从单张图像提取特征"""
+        if self.feature_mode != "resnet":
+            raise RuntimeError("extract_from_image 仅在 feature_mode='resnet' 时可用")
         image = Image.open(image_path).convert('RGB')
         input_tensor = self.preprocess(image)
         input_batch = input_tensor.unsqueeze(0)
@@ -90,17 +114,21 @@ class ResNetFeatureExtractor:
         """
         生成合成视角的特征
 
-        使用 ResNet 对合成图像进行特征提取，模拟真实场景
+        使用 ResNet 对合成图像进行特征提取，模拟真实场景。
+        当 feature_mode='random' 时，直接生成确定性的随机向量，用于快速跑通流程。
         """
+        if self.feature_mode == "random":
+            seed = hash(f"{path_id}_{view_id}") % (2**32)
+            rng = np.random.RandomState(seed)
+            vec = rng.normal(0, 1.0, size=(self.feature_dim,)).astype(np.float32)
+            return torch.from_numpy(vec)
+
         # 创建合成图像（使用程序化纹理模拟室内场景）
         image = self._generate_synthetic_view(view_id, path_id)
-
         input_tensor = self.preprocess(image)
         input_batch = input_tensor.unsqueeze(0)
-
         with torch.no_grad():
             features = self.feature_extractor(input_batch)
-
         return features.squeeze()
 
     def _generate_synthetic_view(self, view_id: int, path_id: str) -> Image.Image:
@@ -412,6 +440,14 @@ def sample_to_dict(sample: EnhancedR2RSample) -> Dict:
 
 def main():
     """主函数"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--train-samples", type=int, default=1000, help="训练样本数")
+    parser.add_argument("--val-samples", type=int, default=200, help="验证样本数")
+    parser.add_argument("--feature-mode", type=str, default="random", choices=["random", "resnet"])
+    parser.add_argument("--resnet-model", type=str, default="resnet50", choices=["resnet50", "resnet101", "resnet152"])
+    parser.add_argument("--pretrained", action="store_true", help="resnet 模式下是否使用预训练权重（会下载）")
+    args = parser.parse_args()
+
     print("=" * 60)
     print("增强的 R2R 数据生成（ResNet 特征）")
     print("=" * 60)
@@ -419,7 +455,12 @@ def main():
     # 创建特征提取器
     print("\n步骤 1: 加载 ResNet 特征提取器")
     print("-" * 40)
-    feature_extractor = ResNetFeatureExtractor(model_name='resnet50')
+    feature_extractor = ResNetFeatureExtractor(
+        model_name=args.resnet_model,
+        feature_mode=args.feature_mode,
+        pretrained=args.pretrained,
+        feature_dim=2048,
+    )
 
     # 创建数据生成器
     print("\n步骤 2: 创建数据生成器")
@@ -430,12 +471,12 @@ def main():
     # 生成训练数据
     print("\n步骤 3: 生成训练数据")
     print("-" * 40)
-    train_samples = generator.generate_dataset(num_samples=1000, split='train')
+    train_samples = generator.generate_dataset(num_samples=args.train_samples, split='train')
 
     # 生成验证数据
     print("\n步骤 4: 生成验证数据")
     print("-" * 40)
-    val_samples = generator.generate_dataset(num_samples=200, split='val')
+    val_samples = generator.generate_dataset(num_samples=args.val_samples, split='val')
 
     # 保存数据
     print("\n步骤 5: 保存数据")

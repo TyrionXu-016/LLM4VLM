@@ -179,7 +179,9 @@ if __name__ == "__main__":
 
     # 保存结果
     import json
-    output_file = "/Users/tyrion/Projects/Papers/data/generated_instructions_sample.json"
+    from pathlib import Path
+    REPO_ROOT = Path(__file__).resolve().parents[1]
+    output_file = str(REPO_ROOT / "data" / "generated_instructions_sample.json")
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)

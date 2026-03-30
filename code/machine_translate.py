@@ -6,8 +6,12 @@
 
 import sys
 import json
+from pathlib import Path
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -99,7 +103,7 @@ def batch_translate(input_file: str, output_file: str, model: str = "qwen3.5-plu
 
 if __name__ == "__main__":
     translated = batch_translate(
-        input_file="/Users/tyrion/Projects/Papers/data/r2r_english_samples.json",
-        output_file="/Users/tyrion/Projects/Papers/data/r2r_machine_translations.json",
+        input_file=str(REPO_ROOT / "data" / "r2r_english_samples.json"),
+        output_file=str(REPO_ROOT / "data" / "r2r_machine_translations.json"),
         model="qwen3.5-plus"
     )

@@ -20,7 +20,10 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 from dataclasses import dataclass, asdict
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import create_model, count_parameters
 from train_vln_r2r_enhanced import collate_fn
@@ -263,8 +266,8 @@ class ComparisonTrainer:
 
 def load_existing_data() -> Tuple[List[Dict], List[Dict]]:
     """加载现有数据用于对比实验"""
-    train_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_train.json"
-    val_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_val.json"
+    train_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_train.json")
+    val_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_val.json")
 
     with open(train_file, 'r', encoding='utf-8') as f:
         train_data = json.load(f)
@@ -374,14 +377,14 @@ def run_comparison_experiments():
     print(f"\n计划运行 {len(experiments)} 个对比实验")
 
     results = []
-    output_dir = Path("/Users/tyrion/Projects/Papers/experiments/comparison_studies")
+    output_dir = REPO_ROOT / "experiments" / "comparison_studies"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"运行设备：{device}")
 
     # 加载词表
-    vocab_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/vocabulary.json"
+    vocab_file = str(REPO_ROOT / "data" / "r2r_enhanced" / "vocabulary.json")
     with open(vocab_file, 'r', encoding='utf-8') as f:
         char_to_id = json.load(f)
     vocab_size = len(char_to_id)

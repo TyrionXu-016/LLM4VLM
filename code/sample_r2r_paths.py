@@ -6,6 +6,9 @@
 
 import json
 import random
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
 
 # R2R 风格场景列表（MatterPort3D）
 SCENES = [
@@ -111,7 +114,10 @@ def sample_r2r_paths(num_paths: int = 10, output_file: str = None) -> list:
 
 if __name__ == "__main__":
     # 生成测试路径
-    paths = sample_r2r_paths(num_paths=10, output_file="/Users/tyrion/Projects/Papers/data/sample_paths.json")
+    paths = sample_r2r_paths(
+        num_paths=10,
+        output_file=str(REPO_ROOT / "data" / "sample_paths.json")
+    )
 
     print("\n采样路径示例:")
     print("=" * 70)

@@ -7,11 +7,13 @@ import json
 from pathlib import Path
 from tabulate import tabulate
 
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+
 
 def load_experiment_results():
     """加载实验结果"""
-    ablation_dir = Path("/Users/tyrion/Projects/Papers/experiments/ablation_studies")
-    comparison_dir = Path("/Users/tyrion/Projects/Papers/experiments/comparison_studies")
+    ablation_dir = REPO_ROOT / "experiments" / "ablation_studies"
+    comparison_dir = REPO_ROOT / "experiments" / "comparison_studies"
 
     ablation_results = []
     comparison_results = []

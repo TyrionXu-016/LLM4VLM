@@ -24,8 +24,9 @@ R2R_DATA_URLS = {
 HF_DATASETS_URL = "https://huggingface.co/datasets/vln-cfdq/vln-cfdq"
 
 # 本地数据目录
-DATA_DIR = Path("/Users/tyrion/Projects/Papers/data/r2r_raw")
-OUTPUT_DIR = Path("/Users/tyrion/Projects/Papers/data/r2r_processed")
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+DATA_DIR = REPO_ROOT / "data" / "r2r_raw"
+OUTPUT_DIR = REPO_ROOT / "data" / "r2r_processed"
 
 
 @dataclass

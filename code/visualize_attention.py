@@ -11,49 +11,51 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import sys
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import create_model
 
 # 输出目录
-OUTPUT_DIR = Path("/Users/tyrion/Projects/Papers/paper/figures")
+OUTPUT_DIR = REPO_ROOT / "paper" / "figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_model_and_data():
     """加载模型和数据"""
-    # 加载模型
-    model_path = "/Users/tyrion/Projects/Papers/checkpoints/vln_r2r_best.pt"
-    checkpoint = torch.load(model_path, map_location='cpu')
+    # 加载词表
+    vocab_file = REPO_ROOT / "data" / "r2r_enhanced" / "vocabulary.json"
+    with open(vocab_file, 'r', encoding='utf-8') as f:
+        char_to_id = json.load(f)
+    id_to_char = {v: k for k, v in char_to_id.items()}
+    vocab_size = len(char_to_id)
+
+    # 加载模型权重
+    model_path = REPO_ROOT / "checkpoints" / "vln_r2r_best.pt"
+    checkpoint = torch.load(str(model_path), map_location='cpu')
 
     # 创建模型（使用正确词表大小）
-    model = create_model(vocab_size=97, d_model=256)
+    model = create_model(vocab_size=vocab_size, d_model=256)
 
     # 处理词表大小不匹配
     state_dict = checkpoint['model_state_dict']
     saved_vocab = state_dict.get('instruction_encoder.embedding.weight').shape[0]
-    if saved_vocab != 97:
+    if saved_vocab != vocab_size:
         saved_embedding = state_dict['instruction_encoder.embedding.weight']
         del state_dict['instruction_encoder.embedding.weight']
         model.load_state_dict(state_dict, strict=False)
         with torch.no_grad():
-            min_size = min(saved_embedding.shape[0], 97)
+            min_size = min(saved_embedding.shape[0], vocab_size)
             model.instruction_encoder.embedding.weight[:min_size] = saved_embedding[:min_size]
     else:
         model.load_state_dict(checkpoint['model_state_dict'])
 
     model.eval()
 
-    # 加载词表
-    vocab_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/vocabulary.json"
-    with open(vocab_file, 'r', encoding='utf-8') as f:
-        char_to_id = json.load(f)
-
-    # 反向词表
-    id_to_char = {v: k for k, v in char_to_id.items()}
-
     # 加载验证数据
-    data_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_val.json"
+    data_file = REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_val.json"
     with open(data_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 

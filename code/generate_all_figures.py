@@ -41,7 +41,8 @@ rcParams.update({
 })
 
 # 输出目录
-output_dir = Path("/Users/tyrion/Projects/Papers/paper/figures")
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+output_dir = REPO_ROOT / "paper" / "figures"
 output_dir.mkdir(parents=True, exist_ok=True)
 
 # 颜色方案（学术风格）

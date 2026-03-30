@@ -132,7 +132,7 @@ wget https://raw.githubusercontent.com/peteranderson/VLNCE/master/data/R2R/val_u
 # 从 Google Drive 或官方源下载
 
 # 3. 准备中文指令数据（我们已生成）
-cp /Users/tyrion/Projects/Papers/data/generated_instructions.json ./data/chinese_train.json
+cp data/generated_instructions.json ./data/chinese_train.json
 ```
 
 ### 阶段 3：模型实现（3-5 天）

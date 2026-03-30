@@ -7,6 +7,7 @@ VLN 中文指令质量评估工具
 import json
 from typing import List, Dict, Optional
 from dataclasses import dataclass, asdict
+from pathlib import Path
 
 
 @dataclass
@@ -310,7 +311,8 @@ class SimpleChineseVLNEvaluator:
 # === 使用示例 ===
 if __name__ == "__main__":
     # 加载新生成的指令
-    with open("/Users/tyrion/Projects/Papers/data/generated_instructions.json", "r", encoding="utf-8") as f:
+    REPO_ROOT = Path(__file__).resolve().parents[1]
+    with open(REPO_ROOT / "data" / "generated_instructions.json", "r", encoding="utf-8") as f:
         instructions = json.load(f)
 
     # 创建评估器
@@ -324,7 +326,7 @@ if __name__ == "__main__":
 
     # 保存详细结果
     output_data = [asdict(r) for r in results]
-    output_file = "/Users/tyrion/Projects/Papers/data/evaluation_results.json"
+    output_file = REPO_ROOT / "data" / "evaluation_results.json"
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)

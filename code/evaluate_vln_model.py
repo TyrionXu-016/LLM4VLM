@@ -14,8 +14,12 @@ import torch
 from typing import Dict, List, Tuple
 from pathlib import Path
 from dataclasses import asdict
+import argparse
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+REPO_ROOT = Path(__file__).resolve().parents[1]  # .../LLM4VLM
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from vln_baseline_model import VLNBaseline, create_model
 from vln_evaluation import VLNEvaluator, print_evaluation_report
@@ -53,7 +57,7 @@ class VLNModelEvaluator:
         saved_vocab_size = embedding_weight.shape[0] if embedding_weight is not None else 88
 
         # 加载词表文件获取实际词表大小
-        vocab_file = Path("/Users/tyrion/Projects/Papers/data/r2r_enhanced/vocabulary.json")
+        vocab_file = REPO_ROOT / "data" / "r2r_enhanced" / "vocabulary.json"
         if vocab_file.exists():
             with open(vocab_file, 'r', encoding='utf-8') as f:
                 self.char_to_id = json.load(f)
@@ -371,25 +375,28 @@ def print_model_evaluation_report(metrics: Dict,
 
 def main():
     """主函数"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model-path", type=str, default=str(REPO_ROOT / "checkpoints" / "vln_r2r_best.pt"))
+    parser.add_argument("--val-data", type=str, default=str(REPO_ROOT / "data" / "r2r_enhanced" / "r2r_enhanced_val.json"))
+    parser.add_argument("--output-dir", type=str, default=str(REPO_ROOT / "data" / "evaluation_r2r"))
+    parser.add_argument("--max-samples", type=int, default=200)
+    parser.add_argument("--device", type=str, default="cpu")
+    args = parser.parse_args()
+
     print("=" * 60)
     print("VLN 模型评估（SR/SPL）")
     print("=" * 60)
 
-    # 模型路径
-    model_path = "/Users/tyrion/Projects/Papers/checkpoints/vln_r2r_best.pt"
-
-    # 数据路径
-    val_data_file = "/Users/tyrion/Projects/Papers/data/r2r_enhanced/r2r_enhanced_val.json"
-
-    # 输出目录
-    output_dir = Path("/Users/tyrion/Projects/Papers/data/evaluation_r2r")
+    model_path = args.model_path
+    val_data_file = args.val_data
+    output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # 创建评估器
-    evaluator = VLNModelEvaluator(model_path=model_path)
+    evaluator = VLNModelEvaluator(model_path=model_path, device=args.device)
 
     # 评估验证集
-    results, metrics = evaluator.evaluate_dataset(val_data_file, max_samples=200)
+    results, metrics = evaluator.evaluate_dataset(val_data_file, max_samples=args.max_samples)
 
     # 打印报告
     print_model_evaluation_report(metrics, results)

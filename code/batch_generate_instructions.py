@@ -8,7 +8,11 @@ import sys
 import json
 import time
 
-sys.path.insert(0, '/Users/tyrion/Projects/Papers/code')
+from pathlib import Path
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CODE_DIR = Path(__file__).resolve().parent
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -59,8 +63,8 @@ def batch_generate(input_file: str, output_file: str, model: str = None):
 
 if __name__ == "__main__":
     results = batch_generate(
-        input_file="/Users/tyrion/Projects/Papers/data/sample_paths.json",
-        output_file="/Users/tyrion/Projects/Papers/data/generated_instructions.json",
+        input_file=str(REPO_ROOT / "data" / "sample_paths.json"),
+        output_file=str(REPO_ROOT / "data" / "generated_instructions.json"),
         model="qwen3.5-plus"  # 使用你配置的模型
     )
 
