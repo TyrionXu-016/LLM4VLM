@@ -56,3 +56,8 @@ data/generated_instructions.json
 # Git LFS files
 *.zip
 *.docx
+
+# Model / experiment artifacts
+checkpoints/
+data/evaluation_r2r/
+data/evaluation/
