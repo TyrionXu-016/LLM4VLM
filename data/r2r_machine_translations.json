@@ -1,0 +1,131 @@
+[
+  {
+    "path_id": "r2r_001",
+    "scene_type": "住宅",
+    "english_reference": "Walk past the sofa, go through the archway and upstairs to the bedroom window.",
+    "machine_translation": "走过沙发，穿过拱门，再上楼到卧室窗户。",
+    "start_location": "客厅入口",
+    "waypoints": [
+      "沙发",
+      "拱门",
+      "楼梯"
+    ],
+    "end_location": "二楼卧室窗边",
+    "distance": 15
+  },
+  {
+    "path_id": "r2r_002",
+    "scene_type": "住宅",
+    "english_reference": "Turn left and walk down the hallway, passing the bathroom on your right. Stop at the end of the corridor.",
+    "machine_translation": "向左转，顺着走廊往前走，路过右手边的卫生间，走到走廊尽头停下。",
+    "start_location": "大厅",
+    "waypoints": [
+      "卫生间",
+      "走廊"
+    ],
+    "end_location": "走廊尽头",
+    "distance": 12
+  },
+  {
+    "path_id": "r2r_003",
+    "scene_type": "住宅",
+    "english_reference": "Go straight through the kitchen, turn right at the refrigerator, and walk to the back door.",
+    "machine_translation": "穿过厨房直走，到冰箱那儿往右拐，再走到后门。",
+    "start_location": "厨房入口",
+    "waypoints": [
+      "厨房",
+      "冰箱"
+    ],
+    "end_location": "后门",
+    "distance": 10
+  },
+  {
+    "path_id": "r2r_004",
+    "scene_type": "酒店",
+    "english_reference": "From the lobby, take the elevator to the second floor, turn left and walk down the hall to room 205.",
+    "machine_translation": "从大堂坐电梯到二楼，往左拐，顺着走廊走就到 205 房间了。",
+    "start_location": "大堂",
+    "waypoints": [
+      "电梯",
+      "走廊"
+    ],
+    "end_location": "205 房间",
+    "distance": 25
+  },
+  {
+    "path_id": "r2r_005",
+    "scene_type": "住宅",
+    "english_reference": "Walk past the dining table, go through the sliding glass door and out to the patio.",
+    "machine_translation": "走过餐桌，穿过玻璃推拉门，走到外面的露台。",
+    "start_location": "餐厅",
+    "waypoints": [
+      "餐桌",
+      "玻璃门"
+    ],
+    "end_location": "露台",
+    "distance": 8
+  },
+  {
+    "path_id": "r2r_006",
+    "scene_type": "办公室",
+    "english_reference": "From the reception desk, go straight past the conference room on your left. The office is at the end of the hallway.",
+    "machine_translation": "从接待台往前直走，经过左边的会议室，办公室就在走廊尽头。",
+    "start_location": "前台",
+    "waypoints": [
+      "会议室",
+      "走廊"
+    ],
+    "end_location": "办公室尽头",
+    "distance": 20
+  },
+  {
+    "path_id": "r2r_007",
+    "scene_type": "住宅",
+    "english_reference": "Climb the stairs, turn right at the top, and enter the master bedroom. Stop in front of the closet.",
+    "machine_translation": "上楼梯，到了上面右转，进主卧，然后在衣柜前停下。",
+    "start_location": "楼梯底部",
+    "waypoints": [
+      "楼梯",
+      "主卧"
+    ],
+    "end_location": "衣柜前",
+    "distance": 18
+  },
+  {
+    "path_id": "r2r_008",
+    "scene_type": "住宅",
+    "english_reference": "Walk through the living room, past the fireplace, and out the French doors to the garden.",
+    "machine_translation": "穿过客厅，经过壁炉，从法式门出去就是花园了。",
+    "start_location": "客厅",
+    "waypoints": [
+      "壁炉",
+      "法式门"
+    ],
+    "end_location": "花园",
+    "distance": 14
+  },
+  {
+    "path_id": "r2r_009",
+    "scene_type": "酒店",
+    "english_reference": "From the elevator, turn left and walk past the ice machine. The vending area is on your right.",
+    "machine_translation": "出电梯后左转，走过制冰机，自动售货区就在你右手边。",
+    "start_location": "电梯口",
+    "waypoints": [
+      "制冰机"
+    ],
+    "end_location": "自动售货区",
+    "distance": 10
+  },
+  {
+    "path_id": "r2r_010",
+    "scene_type": "住宅",
+    "english_reference": "Go down the stairs, turn left at the bottom, and walk straight to the garage door.",
+    "machine_translation": "走下楼梯，到底左转，再直走走到车库门。",
+    "start_location": "楼梯顶部",
+    "waypoints": [
+      "楼梯"
+    ],
+    "end_location": "车库门",
+    "distance": 12
+  }
+]

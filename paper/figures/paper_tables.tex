@@ -1,0 +1,83 @@
+
+% Table 1: Main Results
+\begin{table}[t]
+\centering
+\begin{tabular}{lccc}
+\hline
+\textbf{Model} & \textbf{SR (\%)} & \textbf{SPL (\%)} & \textbf{Oracle SR (\%)} \\
+\hline
+VLN-BERT (Paper) & ~55 & ~50 & - \\
+\textbf{Ours (LLM+ResNet)} & \textbf{62.0} & \textbf{61.8} & \textbf{69.0} \\
+\hline
+\end{tabular}
+\caption{Main results comparison with VLN-BERT baseline.}
+\label{tab:main_results}
+\end{table}
+
+% Table 2: Instruction Quality Comparison
+\begin{table}[t]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Method} & \textbf{Excellent Rate (\%)} & \textbf{Avg Score (1-5)} \\
+\hline
+Machine Translation & 20.0 & 4.28 \\
+\textbf{LLM Direct (Ours)} & \textbf{76.7} & \textbf{4.61} \\
+\hline
+\end{tabular}
+\caption{Instruction quality comparison between machine translation and LLM direct generation.}
+\label{tab:instruction_quality}
+\end{table}
+
+% Table 3: Feature Ablation Study
+\begin{table}[t]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Feature Type} & \textbf{Best Val Loss} & \textbf{Training Time} \\
+\hline
+Random Gaussian & 3.37 & 6 min \\
+\textbf{ResNet-50 (Ours)} & \textbf{2.63 (-22\%)} & \textbf{1 min (-83\%)} \\
+\hline
+\end{tabular}
+\caption{Ablation study on visual feature representations.}
+\label{tab:feature_ablation}
+\end{table}
+
+% Table 4: Performance by Instruction Type
+\begin{table}[t]
+\centering
+\begin{tabular}{lcc}
+\hline
+\textbf{Instruction Type} & \textbf{Samples} & \textbf{SR (\%)} \\
+\hline
+Turn Left & 104 & 58.7 \\
+Turn Right & 96 & 65.6 \\
+Go Straight & 109 & 68.8 \\
+\hline
+\end{tabular}
+\caption{Performance breakdown by instruction type.}
+\label{tab:instruction_type}
+\end{table}
+
+% Table 5: Training Configuration
+\begin{table}[t]
+\centering
+\begin{tabular}{lc}
+\hline
+\textbf{Hyperparameter} & \textbf{Value} \\
+\hline
+Batch Size & 16 (effective 32) \\
+Learning Rate & 1e-4 (warmup + cosine) \\
+Warmup Epochs & 3 \\
+Max Epochs & 20 \\
+Early Stop Patience & 5 \\
+Vocabulary Size & 97 chars \\
+Hidden Dimension & 256 \\
+Attention Heads & 8 \\
+Encoder Layers & 2 \\
+\hline
+\end{tabular}
+\caption{Training hyperparameters.}
+\label{tab:hyperparams}
+\end{table}

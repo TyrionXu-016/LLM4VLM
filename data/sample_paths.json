@@ -1,0 +1,151 @@
+[
+  {
+    "path_id": "path_0001",
+    "scene_id": "m8g7jRjSxHf",
+    "scene_type": "室内",
+    "start_location": "前台旁边",
+    "waypoints": [
+      "楼梯",
+      "镜子",
+      "电视"
+    ],
+    "end_location": "楼梯顶部",
+    "distance": 8,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0002",
+    "scene_id": "N5f2H15fVmF",
+    "scene_type": "室内",
+    "start_location": "入口处",
+    "waypoints": [
+      "茶几",
+      "床头柜",
+      "浴缸"
+    ],
+    "end_location": "沙发前",
+    "distance": 21,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0003",
+    "scene_id": "H15fVmFZ5z2",
+    "scene_type": "室内",
+    "start_location": "电梯口",
+    "waypoints": [
+      "车库",
+      "厨房",
+      "书架"
+    ],
+    "end_location": "沙发前",
+    "distance": 25,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0004",
+    "scene_id": "gTV8KGc7Nx7",
+    "scene_type": "室内",
+    "start_location": "玄关",
+    "waypoints": [
+      "柜子",
+      "门",
+      "拱门",
+      "冰箱",
+      "浴缸"
+    ],
+    "end_location": "床尾",
+    "distance": 8,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0005",
+    "scene_id": "2Z6YRPLGq5q",
+    "scene_type": "酒店",
+    "start_location": "客厅门口",
+    "waypoints": [
+      "地毯",
+      "餐厅",
+      "电梯"
+    ],
+    "end_location": "窗边",
+    "distance": 20,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0006",
+    "scene_id": "q8LtD2ZbM2J",
+    "scene_type": "室内",
+    "start_location": "客厅门口",
+    "waypoints": [
+      "壁炉",
+      "床头柜",
+      "卫生间",
+      "走廊",
+      "玄关",
+      "吊灯"
+    ],
+    "end_location": "装饰画下方",
+    "distance": 25,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0007",
+    "scene_id": "9a8jVREeNiE",
+    "scene_type": "室内",
+    "start_location": "阳台入口",
+    "waypoints": [
+      "镜子",
+      "走廊",
+      "床头柜"
+    ],
+    "end_location": "沙发前",
+    "distance": 9,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0008",
+    "scene_id": "2Z6YRPLGq5q",
+    "scene_type": "酒店",
+    "start_location": "楼梯底部",
+    "waypoints": [
+      "储藏室",
+      "吊灯",
+      "洗手台",
+      "花园",
+      "地毯",
+      "浴缸"
+    ],
+    "end_location": "餐桌旁",
+    "distance": 16,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0009",
+    "scene_id": "o68hUzmcYgN",
+    "scene_type": "室内",
+    "start_location": "厨房门口",
+    "waypoints": [
+      "楼梯",
+      "洗手台",
+      "花瓶"
+    ],
+    "end_location": "洗手台前",
+    "distance": 13,
+    "num_variants": 3
+  },
+  {
+    "path_id": "path_0010",
+    "scene_id": "cJZExXp7XmJ",
+    "scene_type": "室内",
+    "start_location": "入口处",
+    "waypoints": [
+      "镜子",
+      "餐桌",
+      "窗户",
+      "盆栽"
+    ],
+    "end_location": "餐桌旁",
+    "distance": 18,
+    "num_variants": 3
+  }
+]

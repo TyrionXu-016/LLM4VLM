@@ -1,0 +1,27 @@
+[
+  {
+    "path_id": "1",
+    "instruction": "从客厅门口进来，走过沙发和茶几，穿过前面的拱门走到走廊尽头，卫生间就到了。",
+    "english_reference": "Walk past the sofa and coffee table, go through the archway into the hallway. Stop at the bathroom at the end."
+  },
+  {
+    "path_id": "2",
+    "instruction": "进门后右拐经过餐桌，路过厨房岛台，从滑动门出去就是后院露台。",
+    "english_reference": "Enter and turn right past the dining table. Walk past the kitchen island and go through the sliding door to the patio."
+  },
+  {
+    "path_id": "3",
+    "instruction": "从接待处直走经过前台，穿过玻璃门后左转进入会议室，走到最里面坐下。",
+    "english_reference": "From reception, walk straight past the front desk. Go through the glass doors and turn left into the conference room. Take a seat at the far end."
+  },
+  {
+    "path_id": "4",
+    "instruction": "上楼梯后右转，沿着墙上的画直走，踩到地毯后继续走，主卧衣柜就在前面。",
+    "english_reference": "Go upstairs and turn right. Walk past the painting on the wall and step onto the rug. Stop in front of the bedroom closet."
+  },
+  {
+    "path_id": "5",
+    "instruction": "背对水槽，路过冰箱和储藏室，从后门出去就是洗衣房。",
+    "english_reference": "Turn away from the sink and walk past the refrigerator. Go past the pantry and exit through the back door into the laundry room."
+  }
+]

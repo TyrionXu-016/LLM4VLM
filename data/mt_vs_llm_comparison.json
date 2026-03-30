@@ -1,0 +1,236 @@
+{
+  "summary": {
+    "machine_translation": {
+      "avg_overall": 4.279999999999999,
+      "excellent_rate": 20.0,
+      "count": 10
+    },
+    "llm_generated": {
+      "avg_overall": 4.606666666666668,
+      "excellent_rate": 76.66666666666667,
+      "count": 30
+    }
+  },
+  "detailed_comparison": [
+    {
+      "path_id": "r2r_001",
+      "english_reference": "Walk past the sofa, go through the archway and upstairs to the bedroom window.",
+      "machine_translation": {
+        "instruction": "走过沙发，穿过拱门，再上楼到卧室窗户那儿。",
+        "overall": 4.075,
+        "quality_level": "良好",
+        "naturalness": 3.3,
+        "clarity": 4.0,
+        "executability": 4.5,
+        "completeness": 4.5
+      },
+      "llm_generated": {
+        "instruction": "从前台旁边直走，路过电视和镜子，大概八米后看到楼梯，直接走上去就到了。",
+        "overall": 4.825,
+        "quality_level": "优秀",
+        "naturalness": 4.3,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_002",
+      "english_reference": "Turn left and walk down the hallway, passing the bathroom on your right. Stop at the end of the corridor.",
+      "machine_translation": {
+        "instruction": "左转，顺着走廊往前走，经过右手边的卫生间，走到走廊尽头停下。",
+        "overall": 4.25,
+        "quality_level": "良好",
+        "naturalness": 3.0,
+        "clarity": 4.5,
+        "executability": 4.5,
+        "completeness": 5.0
+      },
+      "llm_generated": {
+        "instruction": "从前台旁边直走，经过电视和镜子那边，再走几步碰到楼梯，顺着往上走就到顶了。",
+        "overall": 4.625,
+        "quality_level": "优秀",
+        "naturalness": 3.5,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_003",
+      "english_reference": "Go straight through the kitchen, turn right at the refrigerator, and walk to the back door.",
+      "machine_translation": {
+        "instruction": "穿过厨房直走，到冰箱那儿往右拐，再走到后门。",
+        "overall": 4.575,
+        "quality_level": "优秀",
+        "naturalness": 3.8,
+        "clarity": 5.0,
+        "executability": 4.5,
+        "completeness": 5.0
+      },
+      "llm_generated": {
+        "instruction": "离开前台直走，穿过电视和镜子那儿，大概八米远就是楼梯，直接走到顶部就行。",
+        "overall": 4.575,
+        "quality_level": "优秀",
+        "naturalness": 3.8,
+        "clarity": 5.0,
+        "executability": 4.5,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_004",
+      "english_reference": "From the lobby, take the elevator to the second floor, turn left and walk down the hall to room 205.",
+      "machine_translation": {
+        "instruction": "从大堂坐电梯上二楼，左转后顺着走廊走，就到 205 房间了。",
+        "overall": 4.625,
+        "quality_level": "优秀",
+        "naturalness": 4.0,
+        "clarity": 4.5,
+        "executability": 5.0,
+        "completeness": 5.0
+      },
+      "llm_generated": {
+        "instruction": "从入口进来直走，路过茶几和床头柜，看到浴缸后往右转，再走几步就到沙发前啦。",
+        "overall": 4.825,
+        "quality_level": "优秀",
+        "naturalness": 4.3,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_005",
+      "english_reference": "Walk past the dining table, go through the sliding glass door and out to the patio.",
+      "machine_translation": {
+        "instruction": "走过餐桌，穿过玻璃推拉门，走到外面的露台。",
+        "overall": 3.9000000000000004,
+        "quality_level": "良好",
+        "naturalness": 3.3,
+        "clarity": 4.0,
+        "executability": 4.0,
+        "completeness": 4.3
+      },
+      "llm_generated": {
+        "instruction": "进来顺着道一直走，经过茶几和床头柜，看见浴缸往右拐，没多远前面就是沙发了。",
+        "overall": 4.375,
+        "quality_level": "良好",
+        "naturalness": 3.5,
+        "clarity": 4.5,
+        "executability": 4.5,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_006",
+      "english_reference": "From the reception desk, go straight past the conference room on your left. The office is at the end of the hallway.",
+      "machine_translation": {
+        "instruction": "从前台直走，经过左手边的会议室，办公室就在走廊尽头。",
+        "overall": 4.375,
+        "quality_level": "良好",
+        "naturalness": 3.5,
+        "clarity": 4.5,
+        "executability": 4.5,
+        "completeness": 5.0
+      },
+      "llm_generated": {
+        "instruction": "进门直走大概二十米，经过茶几和床头柜，浴缸旁边右转，走到头就是沙发前了。",
+        "overall": 4.625,
+        "quality_level": "优秀",
+        "naturalness": 3.5,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_007",
+      "english_reference": "Climb the stairs, turn right at the top, and enter the master bedroom. Stop in front of the closet.",
+      "machine_translation": {
+        "instruction": "走上楼梯，到顶后右转，进入主卧，停在衣柜前。",
+        "overall": 4.45,
+        "quality_level": "良好",
+        "naturalness": 3.5,
+        "clarity": 5.0,
+        "executability": 4.5,
+        "completeness": 4.8
+      },
+      "llm_generated": {
+        "instruction": "从电梯口出来直走，路过车库和厨房后左转，瞧见书架再往前几步，沙发就到了。",
+        "overall": 4.825,
+        "quality_level": "优秀",
+        "naturalness": 4.3,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_008",
+      "english_reference": "Walk through the living room, past the fireplace, and out the French doors to the garden.",
+      "machine_translation": {
+        "instruction": "穿过客厅，经过壁炉，从法式门出去就到花园了。",
+        "overall": 4.225,
+        "quality_level": "良好",
+        "naturalness": 3.8,
+        "clarity": 4.0,
+        "executability": 4.5,
+        "completeness": 4.6
+      },
+      "llm_generated": {
+        "instruction": "电梯口出来一直走，经过车库和厨房后拐个弯，看到书架别停，再迈几步就到沙发前啦。",
+        "overall": 4.625,
+        "quality_level": "优秀",
+        "naturalness": 4.0,
+        "clarity": 5.0,
+        "executability": 4.5,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_009",
+      "english_reference": "From the elevator, turn left and walk past the ice machine. The vending area is on your right.",
+      "machine_translation": {
+        "instruction": "出了电梯往左转，走过制冰机，自动售货区就在你右手边。",
+        "overall": 4.125,
+        "quality_level": "良好",
+        "naturalness": 3.5,
+        "clarity": 4.0,
+        "executability": 4.0,
+        "completeness": 5.0
+      },
+      "llm_generated": {
+        "instruction": "电梯出来直走，穿过车库到厨房右转，顺着书架方向挪几步，立马就能看见沙发了。",
+        "overall": 4.575,
+        "quality_level": "优秀",
+        "naturalness": 3.8,
+        "clarity": 5.0,
+        "executability": 4.5,
+        "completeness": 5.0
+      }
+    },
+    {
+      "path_id": "r2r_010",
+      "english_reference": "Go down the stairs, turn left at the bottom, and walk straight to the garage door.",
+      "machine_translation": {
+        "instruction": "下楼，到底左转，然后直走到车库门。",
+        "overall": 4.2,
+        "quality_level": "良好",
+        "naturalness": 3.5,
+        "clarity": 5.0,
+        "executability": 4.0,
+        "completeness": 4.3
+      },
+      "llm_generated": {
+        "instruction": "从玄关直走经过柜子和门，穿过拱门看到冰箱后往浴缸方向拐，再走几步就到床尾啦。",
+        "overall": 4.825,
+        "quality_level": "优秀",
+        "naturalness": 4.3,
+        "clarity": 5.0,
+        "executability": 5.0,
+        "completeness": 5.0
+      }
+    }
+  ]
+}

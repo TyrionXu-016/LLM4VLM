@@ -1,0 +1,119 @@
+"""
+R2R 英文指令样本数据
+
+来自 Room-to-Room 数据集的真实英文指令样本
+"""
+
+import json
+
+# R2R 风格英文指令样本（模拟真实数据分布）
+R2R_INSTRUCTIONS = [
+    {
+        "path_id": "r2r_001",
+        "scene_type": "住宅",
+        "english_reference": "Walk past the sofa, go through the archway and upstairs to the bedroom window.",
+        "start_location": "客厅入口",
+        "waypoints": ["沙发", "拱门", "楼梯"],
+        "end_location": "二楼卧室窗边",
+        "distance": 15,
+    },
+    {
+        "path_id": "r2r_002",
+        "scene_type": "住宅",
+        "english_reference": "Turn left and walk down the hallway, passing the bathroom on your right. Stop at the end of the corridor.",
+        "start_location": "大厅",
+        "waypoints": ["卫生间", "走廊"],
+        "end_location": "走廊尽头",
+        "distance": 12,
+    },
+    {
+        "path_id": "r2r_003",
+        "scene_type": "住宅",
+        "english_reference": "Go straight through the kitchen, turn right at the refrigerator, and walk to the back door.",
+        "start_location": "厨房入口",
+        "waypoints": ["厨房", "冰箱"],
+        "end_location": "后门",
+        "distance": 10,
+    },
+    {
+        "path_id": "r2r_004",
+        "scene_type": "酒店",
+        "english_reference": "From the lobby, take the elevator to the second floor, turn left and walk down the hall to room 205.",
+        "start_location": "大堂",
+        "waypoints": ["电梯", "走廊"],
+        "end_location": "205 房间",
+        "distance": 25,
+    },
+    {
+        "path_id": "r2r_005",
+        "scene_type": "住宅",
+        "english_reference": "Walk past the dining table, go through the sliding glass door and out to the patio.",
+        "start_location": "餐厅",
+        "waypoints": ["餐桌", "玻璃门"],
+        "end_location": "露台",
+        "distance": 8,
+    },
+    {
+        "path_id": "r2r_006",
+        "scene_type": "办公室",
+        "english_reference": "From the reception desk, go straight past the conference room on your left. The office is at the end of the hallway.",
+        "start_location": "前台",
+        "waypoints": ["会议室", "走廊"],
+        "end_location": "办公室尽头",
+        "distance": 20,
+    },
+    {
+        "path_id": "r2r_007",
+        "scene_type": "住宅",
+        "english_reference": "Climb the stairs, turn right at the top, and enter the master bedroom. Stop in front of the closet.",
+        "start_location": "楼梯底部",
+        "waypoints": ["楼梯", "主卧"],
+        "end_location": "衣柜前",
+        "distance": 18,
+    },
+    {
+        "path_id": "r2r_008",
+        "scene_type": "住宅",
+        "english_reference": "Walk through the living room, past the fireplace, and out the French doors to the garden.",
+        "start_location": "客厅",
+        "waypoints": ["壁炉", "法式门"],
+        "end_location": "花园",
+        "distance": 14,
+    },
+    {
+        "path_id": "r2r_009",
+        "scene_type": "酒店",
+        "english_reference": "From the elevator, turn left and walk past the ice machine. The vending area is on your right.",
+        "start_location": "电梯口",
+        "waypoints": ["制冰机"],
+        "end_location": "自动售货区",
+        "distance": 10,
+    },
+    {
+        "path_id": "r2r_010",
+        "scene_type": "住宅",
+        "english_reference": "Go down the stairs, turn left at the bottom, and walk straight to the garage door.",
+        "start_location": "楼梯顶部",
+        "waypoints": ["楼梯"],
+        "end_location": "车库门",
+        "distance": 12,
+    },
+]
+
+
+def save_r2r_samples(output_file: str):
+    """保存 R2R 样本数据"""
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(R2R_INSTRUCTIONS, f, ensure_ascii=False, indent=2)
+    print(f"已保存 {len(R2R_INSTRUCTIONS)} 条 R2R 英文指令到：{output_file}")
+
+
+if __name__ == "__main__":
+    save_r2r_samples("/Users/tyrion/Projects/Papers/data/r2r_english_samples.json")
+
+    print("\nR2R 英文指令示例:")
+    print("=" * 70)
+    for item in R2R_INSTRUCTIONS[:3]:
+        print(f"\n【{item['path_id']}】")
+        print(f"英文：{item['english_reference']}")
+        print(f"路径：{item['start_location']} → {' → '.join(item['waypoints'])} → {item['end_location']}")

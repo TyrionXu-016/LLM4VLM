@@ -24,7 +24,6 @@ wheels/
 venv/
 env/
 ENV/
-.env
 
 # IDE
 .idea/
@@ -40,13 +39,6 @@ ENV/
 *.pth
 *.pt
 
-# Checkpoints
-checkpoints/
-
-# Data
-data/
-*.json
-
 # Logs
 *.log
 
@@ -55,3 +47,12 @@ data/
 
 # OMC state
 .omc/
+
+# Large data files (provide samples only)
+data/r2r_enhanced/r2r_enhanced_train.json
+data/r2r_enhanced/r2r_enhanced_val.json
+data/generated_instructions.json
+
+# Git LFS files
+*.zip
+*.docx

@@ -1,0 +1,59 @@
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    block/.style={rectangle, draw, rounded corners, minimum height=1cm, align=center, fill=blue!10},
+    arrow/.style={thick,->,>=stealth}
+]
+
+% Input
+\node (input) [block, fill=green!10] {
+    \textbf{Input}\\
+    Path Description\\
+    (landmarks, directions)
+};
+
+% LLM
+\node (llm) [block, above of=input, minimum width=4cm, fill=yellow!20] {
+    \textbf{LLM (Qwen-3.5)}\\
+    Prompt-based Generation
+};
+
+% Chinese Instruction
+\node (instruction) [block, above of=llm, fill=green!10] {
+    \textbf{Chinese Instruction}\\
+    "直走 3 米，然后左转..."
+};
+
+% VLN Model
+\node (vln) [block, right of=instruction, xshift=4cm, minimum width=5cm, fill=blue!20] {
+    \textbf{VLN-BERT Baseline}\\
+    \small Instruction Encoder + Visual Encoder\\
+    \small Cross-Modal Attention
+};
+
+% Visual Features
+\node (visual) [block, below of=vln, fill=orange!10] {
+    \textbf{ResNet-50}\\
+    Pre-trained Features\\
+    (2048-d $\rightarrow$ 256-d)
+};
+
+% Output
+\node (output) [block, right of=vln, xshift=3cm, fill=green!10] {
+    \textbf{Action Prediction}\\
+    Softmax over 36 candidates
+};
+
+% Arrows
+\draw [arrow] (input) -- node[right] {Path Info} (llm);
+\draw [arrow] (llm) -- node[right] {Generate} (instruction);
+\draw [arrow] (instruction) -- node[above] {Tokenize} (vln);
+\draw [arrow] (visual) -- node[right] {Features} (vln);
+\draw [arrow] (vln) -- node[above] {Predict} (output);
+
+\end{tikzpicture}
+\caption{Overview of our LLM4VLM framework. The LLM generates Chinese navigation instructions from path descriptions, which are then fed into the VLN-BERT baseline model along with ResNet-50 visual features for action prediction.}
+\label{fig:architecture}
+\end{figure*}
